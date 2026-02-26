@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gustavo Zelante — Desenvolvedor</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080810;
+    --c1: #ff3cac;
+    --c2: #784ba0;
+    --c3: #2b86c5;
+    --c4: #00f5d4;
+    --c5: #ffbe0b;
+    --white: #f0eeff;
+    --muted: #777;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'DM Mono', monospace;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  .cursor {
+    position: fixed;
+    width: 12px; height: 12px;
+    background: var(--c4);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s, height 0.2s, background 0.2s;
+    mix-blend-mode: difference;
+  }
+  .cursor.big { width: 40px; height: 40px; background: var(--c1); }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: 0.4;
+  }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.5rem 3rem;
+    z-index: 100;
+    backdrop-filter: blur(20px);
+    background: rgba(8,8,16,0.7);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.2rem;
+    background: linear-gradient(90deg, var(--c1), var(--c4));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    text-decoration: none; color: var(--muted);
+    font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--c4); }
+
+  #hero {
+    min-height: 100vh; display: flex; align-items: center;
+    padding: 8rem 3rem 4rem; position: relative; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% 50%, rgba(120,75,160,0.2) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 10% 80%, rgba(255,60,172,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 50% 10%, rgba(43,134,197,0.12) 0%, transparent 70%);
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 900px; }
+
+  .hero-tag {
+    display: inline-block; font-size: 0.72rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--c4);
+    border: 1px solid rgba(0,245,212,0.4); padding: 0.3rem 0.9rem;
+    margin-bottom: 2rem; animation: fadeUp 0.6s ease both;
+  }
+  .hero-name {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3.5rem, 10vw, 8rem); font-weight: 800;
+    line-height: 0.95; margin-bottom: 2rem;
+    animation: fadeUp 0.6s 0.15s ease both;
+  }
+  .hero-name span {
+    display: block;
+    background: linear-gradient(135deg, var(--c1), var(--c5), var(--c4));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero-bio {
+    font-size: clamp(0.9rem, 1.5vw, 1.05rem); color: var(--muted);
+    max-width: 520px; line-height: 1.9; margin-bottom: 0.8rem;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+  .hero-bio strong { color: var(--white); font-weight: 500; }
+  .hero-quote {
+    font-style: italic; font-size: 0.85rem; color: rgba(0,245,212,0.6);
+    margin-bottom: 3rem; animation: fadeUp 0.6s 0.38s ease both;
+  }
+  .hero-quote::before { content: '"'; }
+  .hero-quote::after  { content: '"'; }
+
+  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; animation: fadeUp 0.6s 0.45s ease both; }
+
+  .btn-primary {
+    display: inline-block; padding: 0.9rem 2.2rem;
+    background: linear-gradient(135deg, var(--c1), var(--c2));
+    color: white; text-decoration: none;
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 0.85rem; letter-spacing: 0.05em;
+    transition: transform 0.2s;
+  }
+  .btn-primary:hover { transform: translateY(-3px); }
+
+  .btn-secondary {
+    display: inline-block; padding: 0.9rem 2.2rem;
+    border: 1px solid rgba(255,255,255,0.15); color: var(--muted);
+    text-decoration: none; font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 0.85rem; letter-spacing: 0.05em;
+    transition: border-color 0.2s, color 0.2s, transform 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--c4); color: var(--c4); transform: translateY(-3px); }
+
+  .shape {
+    position: absolute; border-radius: 50%;
+    pointer-events: none; z-index: 0; animation: float linear infinite;
+  }
+  .shape:nth-child(1) { width: 320px; height: 320px; right: 4%; top: 12%; background: linear-gradient(135deg, rgba(255,60,172,0.12), rgba(120,75,160,0.12)); animation-duration: 22s; border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+  .shape:nth-child(2) { width: 160px; height: 160px; right: 28%; bottom: 18%; background: linear-gradient(135deg, rgba(0,245,212,0.08), rgba(43,134,197,0.08)); animation-duration: 16s; animation-direction: reverse; }
+  .shape:nth-child(3) { width: 70px; height: 70px; right: 14%; top: 58%; background: rgba(255,190,11,0.12); animation-duration: 11s; border-radius: 40% 60%; }
+
+  section { padding: 6rem 3rem; position: relative; z-index: 1; }
+  .section-label { font-size: 0.68rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--c1); margin-bottom: 0.8rem; }
+  .section-title { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; line-height: 1.1; margin-bottom: 3.5rem; }
+  .divider { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent); }
+
+  #stack { background: rgba(255,255,255,0.015); }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem; }
+
+  .stack-item {
+    border: 1px solid rgba(255,255,255,0.07); padding: 1.4rem 1rem;
+    text-align: center; position: relative; overflow: hidden;
+    transition: transform 0.25s, border-color 0.25s;
+    background: rgba(255,255,255,0.02);
+  }
+  .stack-item:hover { transform: translateY(-5px); border-color: var(--item-color); }
+  .stack-item::before {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+    background: var(--item-color); transform: scaleX(0); transition: transform 0.3s;
+  }
+  .stack-item:hover::before { transform: scaleX(1); }
+  .stack-icon { font-size: 1.6rem; margin-bottom: 0.6rem; font-style: normal; }
+  .stack-name { font-size: 0.78rem; letter-spacing: 0.05em; color: var(--muted); transition: color 0.25s; }
+  .stack-item:hover .stack-name { color: var(--item-color); }
+  .stack-tag { display: inline-block; margin-top: 0.5rem; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--item-color); opacity: 0.6; }
+
+  #about { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .about-text p { color: var(--muted); line-height: 1.9; font-size: 0.88rem; margin-bottom: 1.2rem; }
+  .about-text p strong { color: var(--white); font-weight: 500; }
+
+  .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .stat { border: 1px solid rgba(255,255,255,0.07); padding: 1.8rem 1.5rem; position: relative; overflow: hidden; }
+  .stat::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: var(--accent); }
+  .stat:nth-child(1) { --accent: var(--c1); }
+  .stat:nth-child(2) { --accent: var(--c4); }
+  .stat:nth-child(3) { --accent: var(--c5); }
+  .stat:nth-child(4) { --accent: var(--c3); }
+  .stat-number { font-family: 'Syne', sans-serif; font-size: 2.5rem; font-weight: 800; color: var(--accent); line-height: 1; margin-bottom: 0.4rem; }
+  .stat-label { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.05em; line-height: 1.4; }
+
+  #contact { max-width: 680px; margin: 0 auto; }
+  #contact .section-label, #contact .section-title { text-align: center; }
+  .contact-intro { text-align: center; color: var(--muted); font-size: 0.85rem; line-height: 1.8; margin-bottom: 3rem; margin-top: -2rem; }
+  .contact-intro strong { color: var(--white); font-weight: 500; }
+
+  .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+  .form-group label { display: block; font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.45rem; }
+  .form-group input, .form-group textarea {
+    width: 100%; background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08); color: var(--white);
+    font-family: 'DM Mono', monospace; font-size: 0.85rem;
+    padding: 0.85rem 1.1rem; outline: none; resize: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .form-group input:focus, .form-group textarea:focus { border-color: var(--c4); background: rgba(0,245,212,0.03); }
+  .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(255,255,255,0.15); }
+
+  .form-submit {
+    align-self: center; padding: 1rem 3rem;
+    background: transparent; color: var(--c4);
+    border: 1px solid var(--c4); font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 0.85rem; letter-spacing: 0.08em;
+    cursor: none; transition: background 0.3s, color 0.3s, transform 0.2s;
+  }
+  .form-submit:hover { background: var(--c4); color: var(--bg); transform: translateY(-3px); }
+
+  .contact-links { display: flex; justify-content: center; gap: 2.5rem; margin-top: 3rem; padding-top: 2.5rem; border-top: 1px solid rgba(255,255,255,0.05); }
+  .contact-link { color: var(--muted); text-decoration: none; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.2s; position: relative; }
+  .contact-link::after { content: ''; position: absolute; bottom: -3px; left: 0; right: 0; height: 1px; background: var(--c1); transform: scaleX(0); transition: transform 0.3s; }
+  .contact-link:hover { color: var(--c1); }
+  .contact-link:hover::after { transform: scaleX(1); }
+
+  footer { text-align: center; padding: 2rem 3rem; border-top: 1px solid rgba(255,255,255,0.04); color: rgba(255,255,255,0.18); font-size: 0.72rem; letter-spacing: 0.05em; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 33% { transform: translateY(-20px) rotate(4deg); } 66% { transform: translateY(10px) rotate(-3deg); } }
+
+  .reveal { opacity: 0; transform: translateY(35px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { gap: 1.5rem; }
+    #hero, section { padding-left: 1.5rem; padding-right: 1.5rem; }
+    #about { grid-template-columns: 1fr; gap: 3rem; }
+    .form-row { grid-template-columns: 1fr; }
+    #contact { padding: 4rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+
+<nav>
+  <div class="nav-logo">GZ</div>
+  <ul class="nav-links">
+    <li><a href="#stack">Stack</a></li>
+    <li><a href="#about">Sobre</a></li>
+    <li><a href="#contact">Contato</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="shape"></div>
+  <div class="shape"></div>
+  <div class="shape"></div>
+
+  <div class="hero-content">
+    <div class="hero-tag">Desenvolvedor Full Stack</div>
+    <h1 class="hero-name">
+      Gustavo<br>
+      <span>Zelante.</span>
+    </h1>
+    <p class="hero-bio">
+      Desenvolvo <strong>aplicações web e mobile</strong> do back ao front,
+      com um stack variado e a curiosidade como combustível.
+      Sempre buscando o próximo problema interessante para resolver —
+      seja para <strong>empresas ou projetos freelance</strong>.
+    </p>
+    <p class="hero-quote">Aprender é o que me mantém vivo dentro do código.</p>
+    <div class="hero-ctas">
+      <a href="#contact" class="btn-primary">Fale comigo</a>
+      <a href="#stack" class="btn-secondary">Ver meu stack</a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="stack">
+  <div class="section-label reveal">Tecnologias</div>
+  <h2 class="section-title reveal">Meu Stack</h2>
+
+  <div class="stack-grid">
+    <div class="stack-item reveal" style="--item-color: #f89820;">
+      <div class="stack-icon">☕</div>
+      <div class="stack-name">Java</div>
+      <div class="stack-tag">Backend</div>
+    </div>
+    <div class="stack-item reveal" style="--item-color: #336791;">
+      <div class="stack-icon">🐘</div>
+      <div class="stack-name">PostgreSQL</div>
+      <div class="stack-tag">Banco de Dados</div>
+    </div>
+    <div class="stack-item reveal" style="--item-color: #00758f;">
+      <div class="stack-icon">🗄️</div>
+      <div class="stack-name">MySQL</div>
+      <div class="stack-tag">Banco de Dados</div>
+    </div>
+    <div class="stack-item reveal" style="--item-color: #68a063;">
+      <div class="stack-icon">⬡</div>
+      <div class="stack-name">Node.js</div>
+      <div class="stack-tag">Backend</div>
+    </div>
+    <div class="stack-item reveal" style="--item-color: #61dafb;">
+      <div class="stack-icon">⚛</div>
+      <div class="stack-name">React</div>
+      <div class="stack-tag">Frontend</div>
+    </div>
+    <div class="stack-item reveal" style="--item-color: #42b883;">
+      <div class="stack-icon">◆</div>
+      <div class="stack-name">Vue.js</div>
+      <div class="stack-tag">Frontend</div>
+    </div>
+    <div class="stack-item reveal" style="--item-color: #f1e05a;">
+      <div class="stack-icon">JS</div>
+      <div class="stack-name">JavaScript</div>
+      <div class="stack-tag">Frontend</div>
+    </div>
+    <div class="stack-item reveal" style="--item-color: #e34c26;">
+      <div class="stack-icon">◻</div>
+      <div class="stack-name">HTML / CSS</div>
+      <div class="stack-tag">Frontend</div>
+    </div>
+    <div class="stack-item reveal" style="--item-color: #8892be;">
+      <div class="stack-icon">🐘</div>
+      <div class="stack-name">PHP</div>
+      <div class="stack-tag">Backend</div>
+    </div>
+    <div class="stack-item reveal" style="--item-color: #54c5f8;">
+      <div class="stack-icon">◈</div>
+      <div class="stack-name">Flutter</div>
+      <div class="stack-tag">Mobile</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="about">
+  <div>
+    <div class="section-label reveal">Quem sou</div>
+    <h2 class="section-title reveal">Curioso por<br>natureza.</h2>
+    <div class="about-text">
+      <p class="reveal">
+        Sou desenvolvedor <strong>full stack</strong> com experiência em múltiplas linguagens e ambientes —
+        do banco de dados à interface, passando pelo servidor. Gosto de entender o problema antes de escolher a ferramenta.
+      </p>
+      <p class="reveal">
+        Meu stack cobre desde <strong>aplicações web</strong> com React e Vue até <strong>APIs robustas</strong> com Java e Node,
+        e apps mobile com Flutter. Banco de dados relacional com MySQL e PostgreSQL faz parte do dia a dia.
+      </p>
+      <p class="reveal">
+        O que me move é a curiosidade — cada projeto novo é uma chance de aprender algo que ainda não sei.
+        Estou disponível para <strong>oportunidades de emprego</strong> e <strong>projetos freelance</strong>.
+      </p>
+    </div>
+  </div>
+
+  <div class="about-stats reveal">
+    <div class="stat">
+      <div class="stat-number">10+</div>
+      <div class="stat-label">Tecnologias no stack</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">Full</div>
+      <div class="stat-label">Stack — do banco ao app</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">Web</div>
+      <div class="stat-label">e Mobile</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">∞</div>
+      <div class="stat-label">Vontade de aprender</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="contact">
+  <div class="section-label reveal">Vamos trabalhar juntos</div>
+  <h2 class="section-title reveal">Tem um projeto<br>em mente?</h2>
+
+  <p class="contact-intro reveal">
+    Seja uma <strong>vaga CLT</strong>, um <strong>projeto freelance</strong> ou só uma conversa sobre tecnologia —
+    pode me chamar.
+  </p>
+
+  <form class="contact-form reveal" onsubmit="handleSubmit(event)">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="name">Nome</label>
+        <input type="text" id="name" placeholder="Seu nome" required>
+      </div>
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" placeholder="seu@email.com" required>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="subject">Assunto</label>
+      <input type="text" id="subject" placeholder="Freelance, vaga, parceria...">
+    </div>
+    <div class="form-group">
+      <label for="message">Mensagem</label>
+      <textarea id="message" rows="5" placeholder="Me conta o que você tem em mente..." required></textarea>
+    </div>
+    <button type="submit" class="form-submit">Enviar mensagem</button>
+  </form>
+
+  <div class="contact-links reveal">
+    <a href="https://github.com/zelante11" target="_blank" class="contact-link">GitHub</a>
+    <a href="https://linkedin.com/" target="_blank" class="contact-link">LinkedIn</a>
+    <a href="/cdn-cgi/l/email-protection#177062646376617857727a767e7b3974787a" class="contact-link">E-mail</a>
+  </div>
+</section>
+
+<footer>
+  <p>Gustavo Zelante &mdash; Desenvolvedor Full Stack &copy; 2026</p>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+  });
+  document.querySelectorAll('a, button, .stack-item').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('big'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
+  });
+
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const delay = parseInt(entry.target.dataset.delay || 0);
+        setTimeout(() => entry.target.classList.add('visible'), delay * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach((el, i) => { el.dataset.delay = i % 5; observer.observe(el); });
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.form-submit');
+    btn.textContent = 'Mensagem enviada!';
+    btn.style.background = 'var(--c4)';
+    btn.style.color = 'var(--bg)';
+    setTimeout(() => {
+      btn.textContent = 
